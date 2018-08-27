@@ -4,9 +4,12 @@ buildscript {
 	}
 	repositories {
 		mavenCentral()
+		maven { url "https://plugins.gradle.org/m2/" }
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath("gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.19.2")
+
 	}
 }
 
@@ -15,6 +18,8 @@ apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: "jacoco"
+apply plugin: 'com.palantir.docker'
+
 
 group = 'pl.decerto.workshop.cloud.basic'
 version = '0.0.1-SNAPSHOT'
@@ -43,3 +48,11 @@ jacocoTestReport {
 }
 
 check.dependsOn jacocoTestReport
+
+// Building docker image
+docker {
+	name "macnowak/basic-cloud-workshop-app" //image name
+	dockerfile file('./docker/app') //path to dockerfile
+	files jar.archivePath //path to jar file
+	buildArgs(['JAR_FILE': "${jar.archiveName}"]) // pass to JAR_FILE arg jar file
+}
