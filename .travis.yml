@@ -9,13 +9,23 @@ after_success:
 
 services:
 - docker
+#
+#deploy:
+#  provider: script
+#  script: bash docker_push.sh
+#  skip_cleanup: true
+#  on:
+#    branch: master
+
 
 deploy:
-  provider: script
-  script: bash docker_push.sh
   skip_cleanup: true
-  on:
-    branch: master
-
-
-
+  provider: elasticbeanstalk
+  access_key_id: $ACCESSKEYID
+  secret_access_key:
+    secure: "$SECRETACCESSKEY"
+  region: us-west-2
+  app: basic-cloud-workshop-dev1
+  env: BasicCloudWorkshopDev1-env
+  bucket_name: elasticbeanstalk-us-west-2-693568640595
+  zip_file: './build/libs/basic-cloud-workshop-app-0.0.1-SNAPSHOT.jar'
