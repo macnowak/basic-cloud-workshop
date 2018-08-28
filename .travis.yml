@@ -19,12 +19,12 @@ services:
 
 
 deploy:
-  skip_cleanup: true
   provider: elasticbeanstalk
-  access-key-id: $ACCESSKEYID
-  secret-access-key: $SECRETACCESSKEY
+  access_key_id: $AWS_ACCESS_KEY_ID
+  secret_access_key: $AWS_SECRET_ACCESS_KEY
   region: us-west-2
   app: basic-cloud-workshop-dev1
   env: BasicCloudWorkshopDev1-env
   bucket_name: elasticbeanstalk-us-west-2-693568640595
   zip_file: './build/libs/basic-cloud-workshop-app-0.0.1-SNAPSHOT.jar'
+  skip_cleanup: true
