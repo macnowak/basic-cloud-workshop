@@ -5,4 +5,4 @@ services:
     image: macnowak/basic-cloud-workshop-app
     container_name: 'basic_cloud_app'
     ports:
-    - "8080:8080"
+    - "8080:5000"
