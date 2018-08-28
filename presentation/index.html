@@ -51,7 +51,17 @@
 			</aside>
 		</section>
 		<section>
-			APPLICATION
+			<h3>The System</h3>
+			<pre><code class="bash hljs" data-trim data-noescape>
+curl -XGET -v localhost:5000/user/{id}
+			</code></pre>
+			<pre><code class="bash hljs" data-trim data-noescape>
+curl -XPOST -v -H "Content-Type: application/json"
+		localhost:5000/user --data '{"name":"maciek"}'
+			</code></pre>
+			<pre><code class="bash hljs" data-trim data-noescape>
+curl -XGET -v localhost:5000/user
+			</code></pre>
 		</section>
 		<section>
 			<h3>Travis CI</h3>
@@ -65,8 +75,6 @@
 		<section>
 			<h3>Travis CI</h3>
 			<p>Log in with github account at http://travis-ci.org/</p>
-
-
 			<aside class="notes">
 
 			</aside>
