@@ -1,0 +1,365 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="Elastisearch for beginners">
+	<meta name="author" content="Maciej Nowak">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>reveal.js</title>
+
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/white-custom.css">
+
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/github.css">
+
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+	</script>
+</head>
+<body>
+<a style="display: block;" href="https://www.decerto.pl">
+	<img style="position: absolute; top: 0; right: 1; border: 0; width: 20%; height: 10%; margin: 4% 5%"
+		 src="img/logo-decerto-big2.png" alt="www.decerto.pl">
+</a>
+<div class="reveal">
+	<div class="slides">
+			<section class="intro">
+				<h1>Basic Cloud Workshop</h1>
+				<br>
+				<p>Maciej Nowak</p>
+				<h6>30-08-2018</h6>
+			</section>
+		<section>
+			<h3>What will you learn</h3>
+			<ul>
+				<li class="fragment">Continuous Deployment</li>
+				<li class="fragment">What is travis</li>
+				<li class="fragment">How to dockerize your app</li>
+				<li class="fragment">What is AWS</li>
+				<li class="fragment">How to deploy to AWS</li>
+				<li class="fragment">How to automate deployment to AWS</li>
+			</ul>
+			<aside class="notes">
+
+			</aside>
+		</section>
+		<section>
+			APPLICATION
+		</section>
+		<section>
+			<h3>Travis CI</h3>
+			<p>Free for open source</p>
+			<p>Let’s you build, test and deploy your software</p>
+			<p>For github public repos</p>
+			<p>Not only java</p>
+			<aside class="notes">
+			</aside>
+		</section>
+		<section>
+			<h3>Travis CI</h3>
+			<p>Log in with github account at http://travis-ci.org/</p>
+
+
+			<aside class="notes">
+
+			</aside>
+		</section>
+		<section>
+			<h3>Travis CI</h3>
+			<br/>
+			<p>Add .travis.yml</p>
+			<pre><code class="bash hljs" data-trim data-noescape>
+language: java
+jdk:
+ - oraclejdk8
+
+			</code></pre>
+		</section>
+		<section>
+			<h3>Travis CI</h3>
+			<br/>
+			<p>Add badge</p>
+			<pre data-fragment-index="2"><code class="json hljs" data-noescape>[![Build Status]
+(https://travis-ci.com/macnowak/basic-cloud-workshop.svg?branch=master)]
+(https://travis-ci.com/macnowak/basic-cloud-workshop)}</code></pre>
+		</section>
+		<section>
+			<h3>Code coverage</h3>
+			<p>Log with github account at https://codecov.io/</p>
+			<aside class="notes">
+
+			</aside>
+		</section>
+		<section>
+			<h3>Code coverage</h3>
+			<br/>
+			<p>Add to build.gradle</p>
+			<pre><code class="bash hljs" data-trim data-noescape>
+apply plugin: "jacoco"
+...
+
+// Code coverage section :
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled true
+    }
+}
+check.dependsOn jacocoTestReport
+
+
+			</code></pre>
+		</section>
+		<section>
+			<h3>Code coverage</h3>
+			<br/>
+			<p>Add to .travis.yml</p>
+			<pre><code class="bash hljs" data-trim data-noescape>
+after_success:
+- bash <(curl -s https://codecov.io/bash)
+			</code></pre>
+		</section>
+		<section>
+			<h3>Code coverage</h3>
+			<br/>
+			<p>Add badge</p>
+			<pre data-fragment-index="2"><code class="json hljs" data-noescape>[![codecov]
+(https://codecov.io/gh/macnowak/basic-cloud-workshop/branch/master/graph/badge.svg)]
+(https://codecov.io/gh/macnowak/basic-cloud-workshop)
+</code></pre>
+		</section>
+		<section>
+			<h3>Docker</h3>
+			<br/>
+			<p>Add Dockerfile</p>
+			<pre><code class="bash hljs" data-trim data-noescape>
+FROM openjdk:8-jdk-alpine
+VOLUME /tmp
+ARG JAR_FILE
+ADD ${JAR_FILE} basic-cloud-workshop-app.jar
+#java.security.egd=file:/dev/./urandom -> https://wiki.apache.org/tomcat/HowTo/FasterStartUp#Entropy_Source
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/basic-cloud-workshop-app.jar"]
+			</code></pre>
+		</section>
+		<section>
+			<h3>Docker</h3>
+			<br/>
+			<p>Add to build.gradle</p>
+			<pre><code class="bash hljs" data-trim data-noescape>
+repositories {
+	maven { url "https://plugins.gradle.org/m2/" }
+}
+...
+dependencies {
+	classpath("gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.19.2")
+}
+...
+apply plugin: 'com.palantir.docker'
+...
+docker {
+    name "macnowak/basic-cloud-workshop-app" //image name
+    dockerfile file('./docker/app') //path to dockerfile
+    files jar.archivePath //path to jar file
+    buildArgs(['JAR_FILE': "${jar.archiveName}"])
+}
+	</code></pre>
+		</section>
+
+		<section>
+			<h3>Docker</h3>
+			<br/>
+			<p>Create image</p>
+			<pre><code class="bash hljs" data-trim data-noescape>
+$ ./gradlew docker
+	</code></pre>
+		</section>
+		<section>
+			<h3>Docker</h3>
+			<br/>
+			<p>Push to hub.docker</p>
+			<pre><code class="bash hljs" data-trim data-noescape>
+$ ./gradlew docker
+	</code></pre>
+		</section>
+		<section>
+			<h3>Docker</h3>
+			<br/>
+			<p>Add to .travis.yml</p>
+			<pre><code class="bash hljs" data-trim data-noescape>
+sudo: required  # super power
+...
+services:
+- docker # we will be using docker features
+...
+deploy:
+  provider: script
+  script: bash docker_push.sh
+  skip_cleanup: true
+  on:
+    branch: master
+
+			</code></pre>
+		</section>
+		<section>
+			<h3>Docker</h3>
+			<br/>
+			<p>Add docker_push.sh</p>
+			<pre><code class="bash hljs" data-trim data-noescape>
+#!/bin/bash
+
+docker login -u "$DOCKER_USER" -p "$DOCKER_PASS";
+./gradlew dockerPush
+			</code></pre>
+		</section>
+		<section>
+			<h3>AWS</h3>
+			<br/>
+			<p>Since 2006</p>
+			<p>Providing infrastructure for Amazon</p>
+			<p>Gartners no. 1 IaaS</p>
+
+		</section>
+		<section>
+			<h3>AWS</h3>
+			<img class="plain" src="img/aws_regions.png"/>
+		</section>
+		<section>
+			<h3>AWS</h3>
+			<img class="plain" src="img/aws_blocks.png" />
+			<aside class="notes">
+				Compute <br/>
+				EC2 - maszyna wirtualna <br/>
+				Elastic Load Balancing - Load balancer pomiedzy maszynami <br/>
+				ECS - Elastic Container Service - odpowiednik Kubernetesa - zarządza dockerami,<br/>
+				jak wirtualka z kontenerem padnie to ECS podniesie kontener gdzieś indziej<br/>
+				AWS Lambda - taka wirtualka na 5 min,<br/>
+
+				Ważna zasada -> system powinien być tak zrobiony, że można dowolną wirtualkę kopnąć i postawić gdzieś indziej...<br/>
+
+				Networking<br/>
+				Amazon VPC - virtual private cloud -> możemy sobie wszystko wyizolować tak jakbyśmy mieli sprzęt we własnej piwnicy<br/>
+				I wiele innych<br/>
+
+				Storage<br/>
+				Amazon EBS - sieciowe dyski podłączone pod EC2<br/>
+				Amazon S3 - key / value -> kluczem jest ścieżka do pliku a value to zawartość do pliku <br/>
+				Amzon EFS -  dysk sieciowy<br/>
+				Amazon Glacier - archiwum - możemy wrzucać pliki ale pobranie dopiero po jakimś requeście<br/>
+
+				Management<br/>
+				Amazon CloudWatch -> logi metyki alarmy<br/>
+
+				A na tych klockach są zbudowane większe klocki -> które amazon opakowywuje w swoje api <br/>
+				Database <br/>
+				Amazon RDS - relacyjne bazy danych <br/>
+				Amazon DynamoDB - <br/>
+			</aside>
+		</section>
+		<section>
+			<h3>AWS - EC2</h3>
+			<img class="plain" src="img/ec2_types.png" />
+			<a href="https://aws.amazon.com/ec2/instance-types/">https://aws.amazon.com/ec2/instance-types/</a>
+			<aside class="notes">
+				Najtańsze T - i najczęsciej spotykane - jak potrzebuje więcej CPU to urośnie.
+				M - ma stałe parametry
+			</aside>
+		</section>
+
+		<section>
+			<h3>AWS - EC2</h3>
+			<table style="font-size: 0.7em">
+				<tbody>
+				<tr>
+					<td style="text-align: center;">Model</td>
+					<td style="text-align: center;">CPU </td>
+					<td style="text-align: center;">Mem (GB)</td>
+					<td style="text-align: center;">Storage (GB)<br> </td>
+				</tr>
+				<tr>
+					<td style="text-align: center;">t1.micro</td>
+					<td style="text-align: center;">2</td>
+					<td style="text-align: center;">6 Credits / hour<br> </td>
+					<td style="text-align: center;">0.5</td>
+				</tr>
+
+				<tr>
+					<td style="text-align: center;">x1e.32xlarge</td>
+					<td style="text-align: center;">128</td>
+					<td style="text-align: center;">3,904 </td>
+					<td style="text-align: center;">2 x 1,920</td>
+				</tr>
+				</tbody>
+			</table>
+
+		</section>
+		<section>
+			<h3>AWS - Elastic Beanstalk</h3>
+			<br/>
+			<p>Service for deploying and scaling web applications</p>
+			<p>Elastic Beanstalk automatically handles the deployment</p>
+			<p>Automatically scales your application up and down based on your application's specific need</p>
+			<p>Capacity provisioning, load balancing, auto-scaling to application health monitoring</p>
+			<aside class="notes">
+				Można samemu skonfigurować EC2 i ustawić wszystkie parametry
+				Ale można też skożystać z ElasticBeantalk - on ma to prekonfigurowane
+			</aside>
+		</section>
+
+		<section>
+			<h3>Deploy app to AWS</h3>
+			<p>Add to .travis.yml</p>
+			<pre><code class="bash hljs" data-trim data-noescape>
+deploy:
+  provider: elasticbeanstalk
+  access_key_id: $AWS_ACCESS_KEY_ID
+  secret_access_key: $AWS_SECRET_ACCESS_KEY
+  region: us-west-2
+  app: basic-cloud-workshop-dev1
+  env: BasicCloudWorkshopDev1-env
+  bucket_name: elasticbeanstalk-us-west-2-693568640595
+  zip_file: './build/libs/basic-cloud-workshop-app-0.0.1-SNAPSHOT.jar'
+  skip_cleanup: true
+
+			</code></pre>
+		</section>
+		<section>
+			<h3>Questions?</h3>
+		</section>
+	</div>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+	// More info about config & dependencies:
+	// - https://github.com/hakimel/reveal.js#configuration
+	// - https://github.com/hakimel/reveal.js#dependencies
+	Reveal.initialize({
+		controls: true,
+		progress: true,
+		history: true,
+		center: true,
+		slideNumber: true,
+
+		dependencies: [
+			{src: 'plugin/markdown/marked.js'},
+			{src: 'plugin/markdown/markdown.js'},
+			{src: 'plugin/notes/notes.js', async: true},
+			{
+				src: 'plugin/highlight/highlight.js', async: true, callback: function () {
+				hljs.initHighlightingOnLoad();
+			}
+			}
+		]
+	});
+</script>
+</body>
+</html>
