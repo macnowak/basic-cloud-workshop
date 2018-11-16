@@ -6,13 +6,13 @@ First of all we need to setup our AWS account and install AWS CLI.
 
 ### Create amazon account
 
-	https://docs.aws.amazon.com/AmazonECR/latest/userguide/get-set-up-for-amazon-ecr.html#sign-up-for-aws
+https://docs.aws.amazon.com/AmazonECR/latest/userguide/get-set-up-for-amazon-ecr.html#sign-up-for-aws
 
 ### Install AWS CLI         
 
- 	https://docs.aws.amazon.com/AmazonECR/latest/userguide/get-set-up-for-amazon-ecr.html#install_aws_cli 
+https://docs.aws.amazon.com/AmazonECR/latest/userguide/get-set-up-for-amazon-ecr.html#install_aws_cli 
  	
- 	https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-quick-configuration 
+https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-quick-configuration 
 
 ## Deploy to elasticbeanstalk
 

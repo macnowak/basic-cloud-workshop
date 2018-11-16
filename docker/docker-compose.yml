@@ -1,8 +1,0 @@
-version: '2'
-
-services:
-  basic_cloud_app:
-    image: macnowak/basic-cloud-workshop-app
-    container_name: 'basic_cloud_app'
-    ports:
-    - "8080:5000"
