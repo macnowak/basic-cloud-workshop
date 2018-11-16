@@ -21,6 +21,6 @@
 ## Get the URL of this environment. Navigate to "AWS Management console > Elastic Beanstalk" and monitor the status of environment creation
 	aws elasticbeanstalk describe-environments --environment-names BasicCloudWorkshopApp-dev --application-name basic-cloud-workshop-app --query 'Environments[0].{URL:CNAME}'
 
-curl -Xget http://BasicCloudWorkshopApp-dev.sphwbid66p.us-west-2.elasticbeanstalk.com/manage/info
+	curl -Xget http://BasicCloudWorkshopApp-dev.sphwbid66p.us-west-2.elasticbeanstalk.com/manage/info
 
 

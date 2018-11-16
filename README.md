@@ -3,7 +3,7 @@
 
 ## About
 
-Project created for learning purpose. 
+Project created for purpose of inter company workshops. 
 
 Simple SpringBoot application with in-memory cache and rest endpoints. 
 
