@@ -7,6 +7,7 @@ Project created for learning purpose.
 
 Simple SpringBoot application with in-memory cache and rest endpoints. 
 
+
 ### Goals 
 
 - [x] SpringBoot 
@@ -16,9 +17,12 @@ Simple SpringBoot application with in-memory cache and rest endpoints.
 - [x] Build and run on docker container
 - [x] Push docker image to repository ( hub.docker.com )
 - [x] Deploy to AWS Elastic Beanstalk
+- [x] Deploy image to AWS ECR 
+- [x] Add deployment to AWS ECS 
+- [ ] Push docker image to ECR from travis-ci
+- [ ] Deploy image to AWS ECS from travis-ci
 - [ ] Add another 'microservice'
 - [ ] Add mongo integration
-- [ ] Add deployment to AWS ECS 
 - [ ] Add RestDocs
 
 
@@ -31,3 +35,5 @@ Simple SpringBoot application with in-memory cache and rest endpoints.
 `GET /user/{id}` - getting user with id  
 
 `GET /user` - get user list
+
+`GET /manage/info` - gets hosts info 

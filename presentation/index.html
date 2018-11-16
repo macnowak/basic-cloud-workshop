@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<meta name="description" content="Elastisearch for beginners">
+	<meta name="description" content="Basic cloud workshop">
 	<meta name="author" content="Maciej Nowak">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
@@ -34,8 +34,11 @@
 				<h1>Basic Cloud Workshop</h1>
 				<br>
 				<p>Maciej Nowak</p>
-				<h6>30-08-2018</h6>
 			</section>
+		<section>
+			<h1>PART I</h1>
+			<h6>30-08-2018</h6>
+		</section>
 		<section>
 			<h3>What will you learn</h3>
 			<ul>
@@ -197,14 +200,6 @@ $ ./gradlew docker
 		<section>
 			<h3>Docker</h3>
 			<br/>
-			<p>Push to hub.docker</p>
-			<pre><code class="bash hljs" data-trim data-noescape>
-$ ./gradlew docker
-	</code></pre>
-		</section>
-		<section>
-			<h3>Docker</h3>
-			<br/>
 			<p>Add to .travis.yml</p>
 			<pre><code class="bash hljs" data-trim data-noescape>
 sudo: required  # super power
@@ -246,7 +241,7 @@ docker login -u "$DOCKER_USER" -p "$DOCKER_PASS";
 		</section>
 		<section>
 			<h3>AWS</h3>
-			<img class="plain" src="img/aws_blocks.png" />
+			<img class="plain" src="img/aws_blocks2.png" />
 			<aside class="notes">
 				Compute <br/>
 				EC2 - maszyna wirtualna <br/>
@@ -283,6 +278,13 @@ docker login -u "$DOCKER_USER" -p "$DOCKER_PASS";
 			<aside class="notes">
 				Najtańsze T - i najczęsciej spotykane - jak potrzebuje więcej CPU to urośnie.
 				M - ma stałe parametry
+
+				Storage Optimized - Dyski są blisko, w tej samej szafie co serwer
+				Compute Optimized - wieloprocesorowe maszyny
+				Accelerated Optimized - procesory Nvidia, używane głownie do Machine Lerning 30$ za godzine
+				Memory Optimized - Kupa pamięci ram
+
+
 			</aside>
 		</section>
 
@@ -312,6 +314,53 @@ docker login -u "$DOCKER_USER" -p "$DOCKER_PASS";
 				</tbody>
 			</table>
 
+		</section>
+		<section>
+			<h3>AWS - pricing</h3>
+			<ul>
+				<li>On Demand - pay-as-you-go</li>
+				<li>Reserved</li>
+				<li>Spot instance</li>
+			</ul>
+			<aside class="notes">
+				On Demand - czas start, płacisz za tyle ile zużyjesz - najdroższy model
+				Reserved - rezerwacja konkretnego sprzeętu o konkretnych parametrach na np. 3 lata
+				Spot instance - giełda zasobw, aws handluje niesprzedaną mocą obliczeniową
+
+
+			</aside>
+		</section>
+		<section>
+			<h3>AWS - EC2 pricing </h3>
+			<ul>
+				<li>Instance type - m3.xlarge - $0,532/h </li>
+				<li>Storage size - $0.11 / GB per month</li>
+				<li>IOPS - $0,055 / 1M I/O</li>
+				<li>EBS snapshot size - $0,095 / GB</li>
+				<li>Traffic to Internet - $0,090 / GB</li>
+				<li>Traffic to other region - $0.02 / GB</li>
+				<li>Traffic to other AZ - $0,01 / GB</li>
+				<li>ELB - $0,028 / h </li>
+			</ul>
+			<aside class="notes">
+				<br/>1. Rodzaj i wielkość instancji Amazon EC2 – np. m3.xlarge z Windows w Irlandii to koszt  za godzinę.
+				<br/>2. Wielkość dysków EBS – $0.11 per GB miesięcznie dla dysków SSD
+				<br/>3. Ilość zagwarantowanych IOPS – dla dysków SSD z zagwarantowaną ilością IOPS jest to $0,072 per IOPS miesięcznie. Dla dysków magnetycznych płacimy $0,055 per 1 milion operacji I/O.
+				<br/>4. Wielkość snapshotu EBS składowanego na Amazon S3 – $0,095 per GB miesięcznie
+				<br/>5. Ruch wychodzący do Internetu – w zależności od ilości ruchu, np. poniżej 10 TB miesięcznie zapłacisz  danych wychodzących
+				<br/>6. Ruch wychodzący do innego Regionu –
+				<br/>7. Ruch wychodzący do innej Availabilty Zone (przez publiczny adres IP) – $0,01 per GB
+				<br/>8. Godziny korzystania z Elastic Load Balancer – $0,028 za godzinę
+				<br/>9. Ilość ruchu przechodząca przez ELB – $0,008 za GB
+				<br/>10. Publiczny lub Elastic IP – płacimy za godzinę $0,005 (bez zależności czy ten adres jest użyty,
+				czy też nie). Jedne publiczny lub Elastic IP jest darmowy. Dodatkowo płacimy za każde 100 remapowań adresów IP miesięcznie – $0,10
+			</aside>
+		</section>
+		<section>
+			<h3>AWS Free Tier </h3>
+			<img src="img/aws_free_tier_p1.png" class="plain" width="60%" height="60%">
+			<br/>
+			<a href="https://aws.amazon.com/free/">Details</a>
 		</section>
 		<section>
 			<h3>AWS - Elastic Beanstalk</h3>
@@ -345,6 +394,166 @@ deploy:
 		</section>
 		<section>
 			<h3>Questions?</h3>
+		</section>
+		<section>
+			<h1>PART II</h1>
+			<h6>15-11-2018</h6>
+		</section>
+		<section>
+			<h3>APP</h3>
+			<pre data-fragment-index="2"><code class="json hljs" data-noescape>
+git clone https://github.com/macnowak/simple-cloud-app
+			</code></pre>
+		</section>
+		<section>
+			<h3>Build</h3>
+			<pre data-fragment-index="2"><code class="json hljs" data-noescape>
+gradle clean build docker
+			</code></pre>
+		</section>
+
+		<section>
+			<h3>Run docker image</h3>
+			<pre class="fragment" data-fragment-index="0"><code class="json hljs" data-noescape>
+docker images
+			</code></pre>
+			<img class="fragment" data-fragment-index="1" src="img/docker_images.png">
+			<pre class="fragment" data-fragment-index="2"><code class="json hljs" data-noescape>
+docker run -p 5000:5000 b6102d59fa50
+			</code></pre>
+		</section>
+		<section>
+			<h3>Check if it's working</h3>
+			<pre data-fragment-index="2"><code class="json hljs" data-noescape>
+curl -XGET -v localhost:5000/manage/info
+			</code></pre>
+		</section>
+		<section>
+			<h3>Install and configure AWS CLI</h3>
+		</section>
+		<section>
+			<img src="img/ecs_eks_fargate.png" class="plain">
+		</section>
+		<section>
+			<h3>Amazon EKS</h3>
+			<p>Kubernetes-as-a-Service</p>
+			<p>Managing containers distributed among a fleet of virtual machines</p>
+			<p>Kubernetes can be used not only in AWS</p>
+		</section>
+		<section>
+			<h3>Amazon ECS</h3>
+			<p>Amazon Elastic Container Service</p>
+			<p>Container management service</p>
+			<p>Makes it easy to run, stop, and manage Docker containers on a cluster</p>
+			<p>Designed for orchestration of AWS services around your containers</p>
+		</section>
+		<section>
+			<h3>Amazon ECR</h3>
+			<p>Amazon Elastic Container Registry </p>
+			<p>Fully-managed Docker container registry</p>
+			<p>Makes it easy to store, manage, and deploy Docker container images.</p>
+		</section>
+		<section>
+			<h3>Creating cluster</h3>
+			<img src="img/creating_cluster_ecs.png" class="plain" width="60%" height="60%">
+		</section>
+		<section>
+			<h3>Fargate</h3>
+			<p>Run containers without having to manage servers or clusters of Amazon EC2 instances</p>
+			<p>No need to provision, configure, or scale clusters of virtual machines to run containers</p>
+			<p>Removes the need to choose server types, decide when to scale your clusters, or optimize cluster packing</p>
+		</section>
+		<section>
+			<h3>Creating repository</h3>
+			<pre class="fragment" data-fragment-index="0"><code class="json hljs" data-noescape>
+aws ecr create-repository --repository-name simple-cloud-app
+			</code></pre>
+			<pre class="fragment" data-fragment-index="1"><code class="json hljs" data-noescape>
+{
+ "repository": {
+	"repositoryArn": "arn:aws:ecr:us-west-2:693568640595:repository/simple-cloud-app",
+	"registryId": "693568640595",
+	"repositoryName": "simple-cloud-app",
+	"repositoryUri": "693568640595.dkr.ecr.us-west-2.amazonaws.com/simple-cloud-app",
+	"createdAt": 1542191727.0
+ }
+}
+			</code></pre>
+		</section>
+		<section>
+			<h3>Tag an image</h3>
+			<pre data-fragment-index="0"><code class="json hljs" data-noescape>
+docker tag b6102d59fa50 693568640595.dkr.ecr.us-west-2.amazonaws.com/simple-cloud-app
+			</code></pre>
+			<img class="fragment" data-fragment-index="1" src="img/docker_images_2.png">
+		</section>
+		<section>
+		<h3>Log in to ecr</h3>
+		execute the output of :
+		<pre data-fragment-index="2"><code class="json hljs" data-noescape>
+aws ecr get-login --no-include-email
+		</code></pre>
+		</section>
+		<section>
+		<h3>Push image to ecr</h3>
+		<pre data-fragment-index="2"><code class="json hljs" data-noescape>
+docker push 693568640595.dkr.ecr.us-west-2.amazonaws.com/simple-cloud-app</code></pre>
+		</section>
+		<section>
+			<h3>Is it there?</h3>
+			<a href="https://us-west-2.console.aws.amazon.com/ecs/home?region=us-west-2#/repositories">https://us-west-2.console.aws.amazon.com/ecs/home?region=us-west-2#/repositories</a>
+		</section>
+		<section>
+			<h3>Concepts</h3>
+			<img data-fragment-index="1" src="img/ecs-objects-taskdef-1aba4ac72a5c999e0cb74833a18e6289eb71d32a.png" class="plain fragment">
+		</section>
+		<section>
+			<h3>Task</h3>
+			<p>Describes which Docker containers to run</p>
+			<p>Defines the images to use, the CPU and memory to allocate, environment variables, ports to expose</p>
+		</section>
+		<section>
+			<h3>Service</h3>
+			<p>Defines the minimum and maximum Tasks from one Task Definition run at any given time</p>
+			<p>Autoscaling</p>
+			<p>Load balancing</p>
+		</section>
+		<section>
+			<h3>Cluster</h3>
+			<p>Groups services</p>
+		</section>
+		<section>
+			<h3>Create first cluster</h3>
+			<a href="https://us-west-2.console.aws.amazon.com/ecs/home?region=us-west-2#/firstRun">
+				https://us-west-2.console.aws.amazon.com/ecs/home?region=us-west-2#/firstRun
+			</a>
+		</section>
+		<section>
+			<h3>Is it working???</h3>
+			<pre data-fragment-index="2"><code class="json hljs" data-noescape>
+curl -XGET -v http://ec2co-ecsel-1iu0tz9hhpadf-1454272960.us-west-2.elb.amazonaws.com:5000/manage/info
+			</code></pre>
+		</section>
+		<section>
+			<h3>IaC - Infrastructure as code</h3>
+			<img src="img/amazon_cloudformation-card.png" class="plain">
+		</section>
+		<section>
+			<h3>CloudFormation samples</h3>
+			<a href="https://github.com/awslabs/aws-cloudformation-templates/tree/master/aws/services/ECS">https://github.com/awslabs/aws-cloudformation-templates/tree/master/aws/services/ECS</a>
+		</section>
+		<section>
+			<h3>Create cluster infrastructure</h3>
+			<pre data-fragment-index="2"><code class="json hljs" data-noescape>
+aws cloudformation deploy --stack-name=production --template-file=aws/public-vpc.yml --capabilities=CAPABILITY_IAM</code></pre>
+		</section>
+		<section>
+			<h3>Create service</h3>
+			<a href="https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks?filter=active">
+				https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks?filter=active
+			</a>
+			<pre data-fragment-index="2"><code class="json hljs" data-noescape>
+aws cloudformation deploy --stack-name=service --template-file=aws/public-service.yml --capabilities=CAPABILITY_IAM</code></pre>
 		</section>
 	</div>
 </div>
